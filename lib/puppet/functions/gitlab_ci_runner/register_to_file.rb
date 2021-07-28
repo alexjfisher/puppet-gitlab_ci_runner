@@ -33,7 +33,7 @@ Puppet::Functions.create_function(:'gitlab_ci_runner::register_to_file') do
     if File.exist?(filename)
       authtoken = File.read(filename).strip
     else
-      return 'DUMMY-NOOP-TOKEN' if closure_scope['facts'].key?('clientnoop')
+      return 'DUMMY-NOOP-TOKEN' if Puppet.settings['noop']
       begin
         authtoken = PuppetX::Gitlab::Runner.register(url, additional_options.merge('token' => regtoken))['token']
 
