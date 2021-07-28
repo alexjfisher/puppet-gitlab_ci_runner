@@ -44,10 +44,9 @@ describe 'gitlab_ci_runner::register_to_file' do
   end
 
   context 'noop does not register runner and returns dummy token' do
-    let(:facts) do
-      {
-        clientnoop: true
-      }
+    before do
+      allow(Puppet.settings).to receive(:[]).and_call_original
+      allow(Puppet.settings).to receive(:[]).with(:noop).and_return(true)
     end
 
     it { is_expected.to run.with_params(url, regtoken, runner_name).and_return('DUMMY-NOOP-TOKEN') }
